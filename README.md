@@ -1,4 +1,4 @@
-Snip is 
+Snip 
 ====
 
 Snip is an open source code snippet manager. With a simple command line interface, you can easily tag and save your code across multiple languages, with multiple output options for your future review.

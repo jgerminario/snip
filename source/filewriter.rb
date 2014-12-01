@@ -28,7 +28,7 @@ module FileWriter
   end
 
   def write_file(snippet_array)
-    File.open(@new_file_name, "w") do |file|
+    File.open(@new_file_name, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
         file << ViewFormatter.snippet_indexer(index)
         snip_object.code_array.each do |line|

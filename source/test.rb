@@ -8,17 +8,17 @@ class OrangeTree
   end
 #</*snip*>
 
-#<*snip*>
+# test <*snip*>
   def age!
     @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5
   end
 #</*snip*>
 
-#<*snip*> rewer
+#<*snip*> test
   def any_oranges?
     !@oranges.empty?
   end
-# erw</*snip*> rewr 
+# test </*snip*> test 
 
   def pick_an_orange!
     raise NoOrangesError, "This tree has no oranges" unless self.any_oranges?

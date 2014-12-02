@@ -4,7 +4,7 @@
 
 require_relative 'viewformatter'
 
-module FileWriter
+module DestinationFileWriter
 
   extend self
 

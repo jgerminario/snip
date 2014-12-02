@@ -14,6 +14,10 @@
 class SourceFileReaderWriter
 attr_reader :file_to_open
 
+  def self.file_to_open
+    @@file_to_open
+  end
+
   def initialize(file_to_open)
     @@file_to_open = file_to_open
     @array_of_lines = []

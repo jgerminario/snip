@@ -22,7 +22,7 @@ class CodeScanner
   def self.run(scan_array)
     @scan_array = scan_array
     while @scan_array.join.include?('<snip>')
-     Snippet.new(array_range)
+      Snippet.new(array_range)
     end
   end
 
@@ -53,8 +53,11 @@ class CodeScanner
   end
 
   def self.strip_snip_tag(index)
-    @scan_array[index].sub!(/<snip>/,' ')
+    p @scan_array
+    @scan_array[index].sub!(/<snip>/,' ') ## WTF - returns an array stripped of all <snip> tags
+    p @scan_array
     @scan_array[index].sub!(/<\/snip>/,' ')
+    
   end
 
 end

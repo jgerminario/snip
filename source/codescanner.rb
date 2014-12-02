@@ -8,7 +8,7 @@ class Snippet
 
   def initialize(code_array)
     @code_array = code_array
-    p @@snippet_array << self
+    @@snippet_array << self
   end
 
   def self.snippet_array

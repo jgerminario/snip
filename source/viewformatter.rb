@@ -9,6 +9,6 @@ module ViewFormatter
 	end
 
 	def success_message(filedir)
-		"Your snippet file has been successfully created at #{filedir}"
+		"Your snippet file has been successfully created at: '#{filedir}'"#.blue
 	end
 end

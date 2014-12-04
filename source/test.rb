@@ -1,24 +1,24 @@
 
-#  <snip>
+#<*snip*>
 class OrangeTree
   attr_reader :age, :height
   def initialize
     @age = 0
     @oranges = []
   end
-#</snip>
+#<*snip*>
 
-#<snip>test
+#<*snip*>
   def age!
     @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5
   end
-#</snip>
+#<*snip*>
 
-#<snip>
+#<*snip*>
   def any_oranges?
     !@oranges.empty?
   end
-#test</snip>
+#<*snip*>
 
   def pick_an_orange!
     raise NoOrangesError, "This tree has no oranges" unless self.any_oranges?
@@ -27,6 +27,7 @@ class OrangeTree
 
 
   def dead?
+
     @age >= 50
   end
 end

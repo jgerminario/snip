@@ -11,8 +11,12 @@
 #   end
 # #</snip>
 
-class FileReaderWriter
+class SourceFileReaderWriter
 attr_reader :file_to_open
+
+  def self.file_to_open
+    @@file_to_open
+  end
 
   def initialize(file_to_open)
     @@file_to_open = file_to_open
@@ -37,11 +41,11 @@ attr_reader :file_to_open
 
   def overwrite
     @overwrite.each_with_index do |element, index|
-      if element.include?("#<snip>")
-        @overwrite[index] = "#<*snip*>\n"
+      if element.include?('<snip>')
+        @overwrite[index].sub!(/<snip>/,'<*snip*>')
       end
-      if element.include?("#</snip>")
-        @overwrite[index] = "#<*snip*>\n"
+      if element.include?('</snip>')
+        @overwrite[index].sub!(/<\/snip>/,'</*snip*>')
       end
     end
   end

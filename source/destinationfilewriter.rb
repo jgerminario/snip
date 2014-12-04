@@ -30,11 +30,12 @@ module DestinationFileWriter
   def write_file(snippet_array)
     File.open(@new_file_name, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
-        file << ViewFormatter.snippet_indexer(index)
+        file << ViewFormatter.snippet_indexer(index, snip_object.title)
         snip_object.code_array.each do |line|
           file << line
         end
-        file << "\n"
+        file << ViewFormatter.status_line(snip_object.line)
+        file << "\n\n"
       end
     end
   end

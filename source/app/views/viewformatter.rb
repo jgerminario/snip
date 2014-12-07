@@ -14,6 +14,6 @@ module ViewFormatter
 	end
 
   def status_line(line)
-    "# **** #{SourceFileReaderWriter.file_to_open}; #{line}; #{Date.today}"
+    "# Snipped from #{SourceFileReaderWriter.file_to_open}:#{line} on #{Time.now.strftime("%m-%d-%Y")}"
   end
 end

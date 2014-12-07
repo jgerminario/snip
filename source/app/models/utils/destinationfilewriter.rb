@@ -2,9 +2,9 @@
 #[#<Snippet:0x007fc98c9cbd20 @code_array=["  def age!\n", "    @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5\n", "  end\n"]>, #<Snippet:0x007fc98c9ca678 @code_array=["  def any_oranges?\n", "    !@oranges.empty?\n", "  end\n"]>]
 
 
-require_relative 'viewformatter'
+require_relative '../../views/viewformatter'
 
-class DestinationFileWriter
+module DestinationFileWriter
 
   extend self
 
@@ -31,10 +31,11 @@ class DestinationFileWriter
     File.open(@new_file_name, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
         file << ViewFormatter.snippet_indexer(index, snip_object.title)
+        file << ViewFormatter.status_line(snip_object.line)
+        file << "\n"
         snip_object.code_array.each do |line|
           file << line
         end
-        file << ViewFormatter.status_line(snip_object.line)
         file << "\n\n"
       end
     end

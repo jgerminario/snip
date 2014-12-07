@@ -1,6 +1,6 @@
-require_relative 'sourcefilereader'
-require_relative 'codescanner'
-require_relative 'destinationfilewriter'
+require_relative '../models/utils/sourcefilereader'
+require_relative '../models/utils/codescanner'
+require_relative '../models/utils/destinationfilewriter'
 
 module CommandLineController
 
@@ -9,7 +9,7 @@ module CommandLineController
   def run
     file_read = SourceFileReaderWriter.new(ARGV.first)
     to_run = file_read.convert_to_array_of_lines
-    CodeScanner.run(to_run)
+    CodeScanner.run(to_run, ARGV.first)
     Snippet.snippet_array
     DestinationFileWriter.run(Snippet.snippet_array)
     puts ViewFormatter.success_message(DestinationFileWriter.full_file_directory)

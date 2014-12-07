@@ -1,5 +1,7 @@
 require 'rspec'
 require_relative '../controller'
+# require 'pry-nav'
+require 'pry-debugger'
 
 describe "This program" do
 
@@ -32,7 +34,7 @@ describe "This program" do
 	end
 
 	describe SourceFileReaderWriter do
-
+		binding.pry
 		let(:open_file) {SourceFileReaderWriter.new(ARGV.first)}
 
 		describe "::new" do
@@ -61,6 +63,10 @@ describe "This program" do
 		let(:empty_array) {[]}
 		let(:test_array) {SourceFileReaderWriter.new(@rspec_test_file).convert_to_array_of_lines}
 
+		before :all do
+
+		end
+
 		after :each do
 			Snippet.class_variable_set(:@@snippet_array, [])
 		end
@@ -85,6 +91,10 @@ describe "This program" do
 		 		expect(CodeScanner.scan_array.join.include?('snip>')).to eq(false)
 		 	end
 
+		end
+
+		describe "::run special cases" do
+
 		 	it "finds tags anywhere in the line, not just adjacent to the # comment symbol" do
 		 		anywhere_code_block =
 		 				["#    erwer <snip>r er \n",
@@ -92,6 +102,7 @@ describe "This program" do
 		 				 "# rwerewr </snip>  rewre \n",
 		 				 "\n"
 		 				]
+
 		 		anywhere_num = rand(5)
 		 		p test_block = (anywhere_code_block*anywhere_num)
 		 		CodeScanner.run(test_block)

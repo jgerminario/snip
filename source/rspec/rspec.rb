@@ -1,5 +1,7 @@
 require 'rspec'
+require 'active_record'
 require_relative '../app/controllers/controller'
+require_relative '../config/environment'
 
 describe "This program" do
 
@@ -11,6 +13,7 @@ describe "This program" do
 		@test_file_code =
 				[
 				 "#<snip>\n",
+				 "5.times {|x| p x}\n",
 				 "5.times {|x| p x}\n",
 				 "#</snip>\n",
 				 "\n"

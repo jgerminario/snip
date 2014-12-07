@@ -24,3 +24,7 @@ end
 
 ActiveRecord::Base.establish_connection :adapter  => 'sqlite3',
                                         :database => DB_PATH
+
+# Establish connection between models and tables
+ActiveRecord::Base.connection
+

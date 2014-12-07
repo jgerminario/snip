@@ -5,7 +5,8 @@
 # require 'pry'
 # require 'pry-nav'
 # require 'colorize'
-require_relative 'controller'
+require_relative 'config/environment'
+require_relative 'app/controllers/controller'
 
 CommandLineController.run
 

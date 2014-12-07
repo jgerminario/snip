@@ -1,23 +1,25 @@
 # Input ex ("\n" and whitespace are necessary to keep to preserve formatting):
 #["#<snip>\n", "  def age!\n", "    @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5\n", "  end\n", "#</snip>\n", "\n", "#<snip>\n", "  def any_oranges?\n", "    !@oranges.empty?\n", "  end\n", "#</snip>\n", "\n"]
 
+require_relative "../snippet"
 
-class Snippet
-  @@snippet_array = []
-  attr_reader :code_array, :title, :line, :filename
+# class Snippet
+#   @@snippet_array = []
+#   attr_reader :code, :title, :line, :filename
 
-  def self.snippet_array
-    @@snippet_array
-  end
+#   def self.snippet_array
+#     @@snippet_array
+#   end
 
-  def initialize(args = {})
-    @code_array = args[:code_array]
-    @title = args[:title]
-    @@snippet_array << self
-    @line = args[:line]
-    @filename = args[:filename]
-  end
-end
+#   def initialize(args = {})
+#     @code = args[:code_array]
+#     @title = args[:title]
+#     @@snippet_array << self
+#     @line = args[:line]
+#     @filename = args[:filename]
+#     self.create(args)
+#   end
+# end
 
 class CodeScanner
   @scan_array = []
@@ -25,7 +27,7 @@ class CodeScanner
   def self.run(scan_array, filename)
     @scan_array = scan_array
     while @scan_array.join.include?('<snip>')
-      Snippet.new(code_array: array_range, title: @title, line: @line, filename: filename)
+      Snippet.parse(code: array_range, title: @title, line: @line, filename: filename)
     end
   end
 
@@ -54,7 +56,7 @@ class CodeScanner
   def self.array_range
     find_begin_range
     find_end_range
-    @scan_array[@begin_scan+1..@end_scan-1]
+    @scan_array[@begin_scan+1..@end_scan-1].join
   end
 
   def self.strip_snip_tag(index)

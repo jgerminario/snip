@@ -33,9 +33,7 @@ module DestinationFileWriter
         file << ViewFormatter.snippet_indexer(index, snip_object.title)
         file << ViewFormatter.status_line(snip_object.line)
         file << "\n"
-        snip_object.code_array.each do |line|
-          file << line
-        end
+        file << snip_object.code
         file << "\n\n"
       end
     end

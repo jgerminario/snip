@@ -41,11 +41,13 @@ attr_reader :file_to_open
 
   def overwrite
     @overwrite.each_with_index do |element, index|
-      if element.include?('<snip>')
+      if element.include?('<snip>') || element.include?('<$>')
         @overwrite[index].sub!(/<snip>/,'<*snip*>')
+        @overwrite[index].sub!(/<\$>/,'<*$*>')
       end
-      if element.include?('</snip>')
+      if element.include?('</snip>') || element.include?('</$>')
         @overwrite[index].sub!(/<\/snip>/,'</*snip*>')
+        @overwrite[index].sub!(/<\/\$>/,'</*$*>')
       end
     end
   end

@@ -1,9 +1,9 @@
 class BatchProcessing
 
-  def self.process
-    Dir.foreach("lib/snips_to_process") do |file|
+  def self.process(directory)
+    Dir.foreach(directory) do |file|
       next if file == '.' or file == '..'
-      CommandLineController.run("lib/snips_to_process/#{file}")
+      CommandLineController.run("#{directory}/#{file}")
     end
   end
 

@@ -9,28 +9,51 @@ module DestinationFileWriter
   extend self
 
   def run(snippet_array)
-    # @new_file_name = @@file_to_open.delete(".rb") + "_snipped.rb"
-    @new_file_name = "my_snips.rb"
-    file_exists?
-    create_new_file
+    # @snip_file_name = @@file_to_open.delete(".rb") + "_snipped.rb"
+    check_config_file_for_file
+    @snip_file_name = "my_snips.rb"
+    # create_new_file
     write_file(snippet_array)
   end
 
-  def file_exists?
-    dir = Dir.new(".")
-    dir.entries.include?(@new_file_name)
-  end
+  def check_config_file_for_file
+    snip_file = File.readlines("../../config/filepath.c")[0]
+    if snip_file 
+      if File.exist?(snip_file)
+        @file_name = snip_file
+      else
+        puts "Output file not found, please specify existing file location/name or desired location/name for new file:"
+        @file_name = File.absolute_path(gets.chomp)
+        save_config_file
+      end
+    else
+      puts "Please specify where you would like to save your snippet file:"
+      @file_name = File.absolute_path(gets.chomp)
+      save_config_file
+    end
+  end 
 
-  def create_new_file
-    unless file_exists?
-      File.new(@new_file_name, 'w')
+  def save_config_file
+    File.open("../../config/filepath.c", "w+") do |f|
+      f << @file_name
     end
   end
 
+  # def create_new_file
+  #   unless file_exists?
+  #     File.new(@snip_file_name, 'w')
+  #   end
+  # end
+
+  def determine_last_index
+    1
+  end
+
+
   def write_file(snippet_array)
-    File.open(@new_file_name, "a") do |file|
+    File.open(@snip_file_name, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
-        file << ViewFormatter.snippet_indexer(snip_object.id, snip_object.title)
+        file << ViewFormatter.snippet_indexer(determine_last_index+index, snip_object.title)
         file << ViewFormatter.status_line(snip_object.line)
         file << "\n"
         file << snip_object.code
@@ -40,7 +63,7 @@ module DestinationFileWriter
   end
 
   def full_file_directory
-    File.absolute_path(@new_file_name)
+    File.absolute_path(@snip_file_name)
   end
 
 end

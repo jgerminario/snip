@@ -3,31 +3,13 @@
 
 require_relative "../snippet"
 
-# class Snippet
-#   @@snippet_array = []
-#   attr_reader :code, :title, :line, :filename
-
-#   def self.snippet_array
-#     @@snippet_array
-#   end
-
-#   def initialize(args = {})
-#     @code = args[:code_array]
-#     @title = args[:title]
-#     @@snippet_array << self
-#     @line = args[:line]
-#     @filename = args[:filename]
-#     self.create(args)
-#   end
-# end
-
 class CodeScanner
   @scan_array = []
   class << self; attr_reader :scan_array end
   def self.run(scan_array, filename)
     @scan_array = scan_array
     while @scan_array.join.include?('<snip>') || @scan_array.join.include?('<$>')
-      Snippet.parse(code: array_range, title: @title, line: @line, filename: filename)
+      Snippet.new(code: array_range, title: @title, line: @line, filename: filename)
     end
   end
 

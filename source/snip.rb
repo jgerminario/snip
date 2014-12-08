@@ -5,7 +5,7 @@
 # require 'pry'
 # require 'pry-nav'
 # require 'colorize'
-require_relative 'config/environment'
+# require_relative 'config/environment'
 require_relative 'app/controllers/controller'
 require_relative 'app/models/utils/batchprocessing'
 

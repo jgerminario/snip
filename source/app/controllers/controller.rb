@@ -1,7 +1,7 @@
 require_relative '../models/utils/sourcefilereader'
 require_relative '../models/utils/codescanner'
 require_relative '../models/utils/destinationfilewriter'
-require 'active_record'
+# require 'active_record'
 
 module CommandLineController
 

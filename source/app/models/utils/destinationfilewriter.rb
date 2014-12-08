@@ -10,32 +10,44 @@ module DestinationFileWriter
 
   def run(snippet_array)
     # @snip_file_name = @@file_to_open.delete(".rb") + "_snipped.rb"
-    check_config_file_for_file
-    @snip_file_name = "my_snips.rb"
+    # check_config_file_for_file
+    # @snip_file_name = "my_snips.rb"
     # create_new_file
     write_file(snippet_array)
-  end
+  end  
 
-  def check_config_file_for_file
-    snip_file = File.readlines("../../config/filepath.c")[0]
-    if snip_file 
-      if File.exist?(snip_file)
-        @file_name = snip_file
-      else
-        puts "Output file not found, please specify existing file location/name or desired location/name for new file:"
-        @file_name = File.absolute_path(gets.chomp)
-        save_config_file
-      end
+  def check_config_file_for_snip_file
+    if snip_filepath
+      check_if_file_still_exists
     else
-      puts "Please specify where you would like to save your snippet file:"
-      @file_name = File.absolute_path(gets.chomp)
-      save_config_file
+      abort("Please specify where you would like to save your snippet file by running 'snip -f <filepath>'")
+      # input = $stdin.gets.chomp
+      # @file_name = File.absolute_path(input)
+      # save_file_path_to_config_file
     end
   end 
 
-  def save_config_file
-    File.open("../../config/filepath.c", "w+") do |f|
-      f << @file_name
+  def snip_filepath
+    File.readlines("config/filepath.config")[0]
+  end
+
+  def check_if_file_still_exists
+    if File.exist?(snip_filepath)
+      @snip_file_name = snip_filepath
+    else
+      abort("Output file not found, please specify existing file location/name or desired location/name for new file by running 'snip -f <filepath>'")
+      # @file_name = File.absolute_path(gets.chomp)
+      # save_file_path_to_config_file
+    end
+  end
+
+  def save_file_path_to_config_file(filename)
+    File.open("config/filepath.config", "w+") do |f|
+      f << File.absolute_path(filename)
+    end
+    unless File.exist?(filename)
+      File.new(filename, 'w')
+      abort("New snippet file created at #{File.absolute_path(filename)}")
     end
   end
 

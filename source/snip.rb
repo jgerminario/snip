@@ -5,11 +5,17 @@
 # require 'pry'
 # require 'pry-nav'
 # require 'colorize'
-require_relative 'controller'
+require_relative 'config/environment'
+require_relative 'app/controllers/controller'
+require_relative 'app/models/utils/batchprocessing'
 
-CommandLineController.run
 
 
+if ARGV[0].include?(".rb")
+  CommandLineController.run(ARGV[0])
+else
+  BatchProcessing.process(ARGV[0])
+end
 
 
 #Tests:

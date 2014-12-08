@@ -1,9 +1,15 @@
 class Snippet < ActiveRecord::Base
+attr_accessor :snippet_array
+
   @@snippet_array = []
   # attr_reader :code, :title, :line, :filename
 
   def self.snippet_array
     @@snippet_array
+  end
+
+  def self.snippet_array=(arg)
+    @@snippet_array = arg
   end
 
   # def initialize(args = {})
@@ -19,5 +25,7 @@ class Snippet < ActiveRecord::Base
   	snip = self.create(args)
     @@snippet_array << snip
   end
+
+
 
 end

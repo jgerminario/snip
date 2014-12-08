@@ -6,7 +6,7 @@ module ViewFormatter
 	extend self
 
 	def snippet_indexer(index, title)
-		"# **** Snippet " + (index+1).to_s + ": #{title} **** \n"
+		"# **** Snippet " + (index).to_s + ": #{title} **** \n"
 	end
 
 	def success_message(filedir)

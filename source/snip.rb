@@ -11,10 +11,10 @@ require_relative 'app/models/utils/batchprocessing'
 
 
 
-if ARGV[0]#.include?("*.rb")
+if ARGV[0].include?(".rb")
   CommandLineController.run(ARGV[0])
 else
-  BatchProcessing.process
+  BatchProcessing.process(ARGV[0])
 end
 
 

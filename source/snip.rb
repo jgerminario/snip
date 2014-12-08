@@ -12,6 +12,8 @@ CommandLineController.run
 
 
 
+puts ViewFormatter.success_message(DestinationFileWriter.full_file_directory)
+
 
 #Tests:
 # p file_write.file_exists?

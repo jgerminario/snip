@@ -1,5 +1,4 @@
-
-# werer <*snip*>
+# <*snip*>
 class OrangeTree
   attr_reader :age, :height
   def initialize
@@ -21,13 +20,3 @@ class OrangeTree
 # test </*snip*> test
 
   def pick_an_orange!
-    raise NoOrangesError, "This tree has no oranges" unless self.any_oranges?
-    @oranges.pop
-  end
-
-
-  def dead?
-
-    @age >= 50
-  end
-end

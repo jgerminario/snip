@@ -1,22 +1,22 @@
-# <snip>
+# <*snip*>
 class OrangeTree
   attr_reader :age, :height
   def initialize
     @age = 0
     @oranges = []
   end
-#</snip>
+#</*snip*>
 
-# test <snip> TITLE
+# test <*snip*> TITLE
   def age!
     @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5
   end
-#</snip>
+#</*snip*>
 
-#   ewre w<snip> test
+#   ewre w<*snip*> test
   def any_oranges?
     !@oranges.empty?
   end
-# test </snip> test
+# test </*snip*> test
 
   def pick_an_orange!

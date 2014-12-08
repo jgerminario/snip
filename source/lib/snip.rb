@@ -1,7 +1,7 @@
 require "snip/version"
-require_relative '../config/environment'
-require_relative '../app/controllers/controller'
-require_relative '../app/models/utils/batchprocessing'
+# require_relative '../config/environment'
+# require_relative '../app/controllers/controller'
+# require_relative '../app/models/utils/batchprocessing'
 
 module Snip
 	class Run

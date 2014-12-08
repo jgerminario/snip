@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+require_relative '../config/environment'
+require_relative '../app/controllers/controller'
+require_relative '../app/models/utils/batchprocessing'
 
 require 'snip'
 

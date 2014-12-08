@@ -1,9 +1,9 @@
 class BatchProcessing
 
   def self.process(directory)
-    Dir.foreach(directory) do |file|
+    Dir.glob(directory + "/**/*.{rb}") do |file|
       next if file == '.' or file == '..'
-      CommandLineController.run("#{directory}/#{file}")
+      CommandLineController.run(file)
     end
   end
 

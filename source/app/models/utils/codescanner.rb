@@ -26,14 +26,14 @@ class CodeScanner
   class << self; attr_reader :scan_array end
   def self.run(scan_array, filename)
     @scan_array = scan_array
-    while @scan_array.join.include?('<snip>')
+    while @scan_array.join.include?('<snip>') || @scan_array.join.include?('<$>')
       Snippet.parse(code: array_range, title: @title, line: @line, filename: filename)
     end
   end
 
   def self.find_begin_range
     @scan_array.each_with_index do |line, index|
-      if line.include?('<snip>')
+      if line.include?('<snip>') || line.include?('<$>')
         find_title(index)
         @line = index+1
         strip_snip_tag(index)
@@ -45,7 +45,7 @@ class CodeScanner
 
   def self.find_end_range
     @scan_array.each_with_index do |line, index|
-      if line.include?('</snip>')
+      if line.include?('</snip>') || line.include?('</$>')
         strip_snip_tag(index)
         return @end_scan = index
       end
@@ -62,12 +62,14 @@ class CodeScanner
   def self.strip_snip_tag(index)
     @scan_array[index].sub!(/<snip>/,'<*snip*>')
     @scan_array[index].sub!(/<\/snip>/,'</*snip*>')
+    @scan_array[index].sub!(/<\$>/,'<*$*>')
+    @scan_array[index].sub!(/<\/\$>/,'</*$*>')
   end
 
   def self.find_title(index)
-    matches = @scan_array[index].match(/<snip>(.+)/)
+    matches = @scan_array[index].match(/(<snip>|<\$>)(.+)/)
     if matches
-      @title = matches[1].strip
+      @title = matches[2].strip
     end
     @title
   end

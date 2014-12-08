@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'snip'
+
+chatter = Snip::Test.new
+chatter.say_hello

@@ -32,6 +32,7 @@ describe "This program" do
 	# Deleting test file after completion of tests
 	after :all do
 		File.delete(@rspec_test_file)
+		Snippet.snippet_array.each {|snippet| snippet.destroy}
 	end
 
 	describe SourceFileReaderWriter do
@@ -125,6 +126,7 @@ describe "::run special cases" do
 	# Deleting test file after completion of tests
 	after :all do
 		File.delete(@rspec_test_file)
+		Snippet.snippet_array.each {|snippet| snippet.destroy}
 	end
 
 	let(:empty_array) {[]}

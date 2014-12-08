@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # **** Snippet 45: test **** 
 # Snipped from lib/snips_to_process/test.rb:17 on 12-07-2014
   def any_oranges?
@@ -12,3 +13,5 @@ def method
 end
 
 
+=======
+>>>>>>> staging

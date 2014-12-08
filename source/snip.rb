@@ -17,6 +17,8 @@ else
   BatchProcessing.process(ARGV[0])
 end
 
+puts ViewFormatter.success_message(DestinationFileWriter.full_file_directory)
+
 
 #Tests:
 # p file_write.file_exists?

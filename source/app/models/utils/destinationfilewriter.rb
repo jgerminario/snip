@@ -3,16 +3,13 @@
 
 
 require_relative '../../views/viewformatter'
+CONFIG_PATH = File.expand_path("../../../../config/filepath.config", __FILE__)
 
 module DestinationFileWriter
 
   extend self
 
   def run(snippet_array)
-    # @snip_file_name = @@file_to_open.delete(".rb") + "_snipped.rb"
-    # check_config_file_for_file
-    # @snip_file_name = "my_snips.rb"
-    # create_new_file
     write_file(snippet_array)
   end  
 
@@ -20,56 +17,51 @@ module DestinationFileWriter
     if snip_filepath
       check_if_file_still_exists
     else
-      abort("Please specify where you would like to save your snippet file by running 'snip -f <filepath>'")
-      # input = $stdin.gets.chomp
-      # @file_name = File.absolute_path(input)
-      # save_file_path_to_config_file
+      abort(ViewFormatter.specify_path)
     end
   end 
 
   def snip_filepath
-    File.readlines("config/filepath.config")[0]
+    File.readlines(CONFIG_PATH)[0]
   end
 
   def check_if_file_still_exists
     if File.exist?(snip_filepath)
       @snip_file_name = snip_filepath
     else
-      abort("Output file not found, please specify existing file location/name or desired location/name for new file by running 'snip -f <filepath>'")
-      # @file_name = File.absolute_path(gets.chomp)
-      # save_file_path_to_config_file
+      abort(ViewFormatter.output_file_not_found)
     end
   end
 
   def save_file_path_to_config_file(filename)
-    File.open("config/filepath.config", "w+") do |f|
+    File.open(CONFIG_PATH, "w+") do |f|
       f << File.absolute_path(filename)
     end
     unless File.exist?(filename)
       File.new(filename, 'w')
-      abort("New snippet file created at #{File.absolute_path(filename)}")
+      abort(ViewFormatter.new_file(filename))
     end
   end
 
-  # def create_new_file
-  #   unless file_exists?
-  #     File.new(@snip_file_name, 'w')
-  #   end
-  # end
-
-  def determine_last_index
-    1
+  def determine_next_index
+    last_snip_scan = File.readlines(@snip_file_name).reverse.join
+    if last_snip_scan.match(/\*\*\*\* Snippet (\d+):/)
+      last_snip_scan.match(/\*\*\*\* Snippet (\d+):/).captures[0].to_i+1
+    else
+      1
+    end
   end
 
 
   def write_file(snippet_array)
     File.open(@snip_file_name, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
-        file << ViewFormatter.snippet_indexer(determine_last_index+index, snip_object.title)
+        file << ViewFormatter.snippet_indexer(determine_next_index+index, snip_object.title)
         file << ViewFormatter.status_line(snip_object.line)
         file << "\n"
         file << snip_object.code
         file << "\n\n"
+        puts ViewFormatter.snip_terminal_status(snip_object.filename, snip_object.line)
       end
     end
   end

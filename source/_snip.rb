@@ -1,3 +1,20 @@
+
+
+
+
+
+#### SEE lib/snip.rb for gem implementation runner file ###
+
+
+
+
+
+
+
+
+
+
+
 ## Stypi session: https://code.stypi.com/jgerminario/snip
 ## debugger: gem install debugger from command line
 
@@ -27,5 +44,3 @@
 # p Snippet.snippet_array
 
 
-
-#### SEE lib/snip.rb for gem implementation runner file ###

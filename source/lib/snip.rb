@@ -1,5 +1,4 @@
 require "snip/version"
-# require_relative '../config/environment'
 require_relative '../app/controllers/controller'
 require_relative '../app/models/utils/batchprocessing'
 
@@ -7,31 +6,20 @@ module Snip
 	class Run
 		def execute
 			unless ARGV[0]
-				abort("Please specify a file or a path to process or type 'snip --help' for help")
+				abort(ViewFormatter.no_args_message)
 			end
 
 			if ARGV[0] == "--help"
-				abort("
-Usage:
-
-snip <filename.rb> - process a single file
-snip <directory> - process a directory recursively
-snip -f <filename> - set your saved-snippets filename and directory. 
-(If you move your saved-snippets file, you will need to run this command again. Your existing snippets will not be overriden)
-
-To add snip tags into your code, example:
-	# <snip> Title goes here
-	5.times do {|x| puts x}
-	# </snip>
-
-Alternately, you can use <$> and </$>. When you run snip on your files, your tags will be replaced as follows: <*snip*> and <*$*>
-
-")
+				abort(ViewFormatter.terminal_help_message)
 			end
 
 			if ARGV[0] == "-f"
-				DestinationFileWriter.save_file_path_to_config_file(ARGV[1])
-				abort("Snippet file location saved as #{File.absolute_path(ARGV[1])}")
+				if !ARGV[1].nil?
+					DestinationFileWriter.save_file_path_to_config_file(ARGV[1])
+					abort(ViewFormatter.new_file_path)
+				else
+					abort(ViewFormatter.specify_filename)
+				end
 			end
 
 			DestinationFileWriter.check_config_file_for_snip_file
@@ -45,5 +33,4 @@ Alternately, you can use <$> and </$>. When you run snip on your files, your tag
 			puts ViewFormatter.success_message(DestinationFileWriter.full_file_directory)
 		end
 	end
-  # Your code goes here...
 end

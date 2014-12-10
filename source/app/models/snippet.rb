@@ -17,6 +17,14 @@ attr_accessor :snippet_array
     @@snippet_array = arg
   end
 
+  def self.rb_snippets
+    @@snippet_array.select {|snippet| snippet.filename.end_with?(".rb")}
+  end
+
+  def self.js_snippets
+    @@snippet_array.select {|snippet| snippet.filename.end_with?(".js")}
+  end
+
   def initialize(args = {})
     @code = args[:code]
     @title = args[:title]

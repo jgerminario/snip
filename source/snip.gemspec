@@ -4,18 +4,18 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'snip/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "snip"
+  spec.name          = "snipgem"
   spec.version       = Snip::VERSION
   spec.authors       = ["jgerminario", "philril", "cmliotta"]
   spec.email         = ["jgerminario@gmail.com"]
-  spec.summary       = %q{Snip is a code snippet tool to save your most interesting code for later review}
-  spec.description   = %q{Using a <snip> tag, you can mark snippets in code commands without interrupting your workflow. At the end of the day, run Snip to automatically gather your snippets from your file for easy review. Compatible with Ruby and JavaScript, with more to come.}
-  spec.homepage      = ""
+  spec.summary       = %q{Snip is a code snipping tool to save your most interesting code for later review.}
+  spec.description   = %q{Using simple tags, you can mark snips in your code without interrupting your workflow. At the end of the day, run 'snip' to gather your snips from all your code for easy review. Compatible with Ruby and JavaScript. Visit the GitHub homepage for further instructions and developer contact details.}
+  spec.homepage      = "https://github.com/jgerminario/snip"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables = ["snip"]
-  # spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  # spec.executables = ["snip"]
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib", "db", "config", "app"]
 

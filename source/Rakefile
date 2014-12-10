@@ -10,6 +10,7 @@ task :seed do
 	test_str1 = "# <snip>\nclass OrangeTree\n  attr_reader :age, :height\n  def initialize\n    @age = 0\n    @oranges = []\n  end\n#</snip>\n\n# test <snip> TITLE\n  def age!\n    @oranges += Array.new(rand(1..10)) { Orange.new } if @age > 5\n  end\n#</snip>\n\n#   ewre w<snip> test\n  def any_oranges?\n    !@oranges.empty?\n  end\n# test </snip> test\n\n  def pick_an_orange!\n"
 	test_str2 = "#<$> Title ggg\ndef method\n  \"code\"\nend\n#</$>\n\n#<$> Title 2323\ndef method\n  \"code\"\nend\n#</$>\n\n#<$> Title 4\ndef method\n  \"code\"\nend\n#</$>"
 	test_str3 = "# <snip> Title of first snip\n  desc \"create the database\"\n  task :create do\n    puts \"Creating file \#{DB_PATH} if it doesn't exist...\"\n    touch DB_PATH\n  end\n# </snip>\n\n# <snip> Title of this snip\n  desc \"drop the database\"\n  task :drop do\n    puts \"Deleting \#{DB_PATH}...\"\n    rm_f DB_PATH\n  end\n# </snip>\n\n# <snip> Title of first snip\n  desc \"create the database\"\n  task :create do\n    puts \"Creating file \#{DB_PATH} if it doesn't exist...\"\n    touch DB_PATH\n  end\n# </snip>\n\n# <snip> Title of this snip\n  desc \"drop the database\"\n  task :drop do\n    puts \"Deleting \#{DB_PATH}...\"\n    rm_f DB_PATH\n  end\n# </snip>"
+	test_str_js = "//<$> Title ggg\nvar test1 = 44;\nvar test2 = 22;\n//</$>\n\n//<$>\nvar test4 = \"Hola\";\n//</$>\n\n"
 
 	FileUtils.rm_rf('rspec/test_snip_files')
 	Dir.mkdir("rspec/test_snip_files")
@@ -27,6 +28,9 @@ task :seed do
   end
   File.open("rspec/test_snip_files/subfolder/test3.rb", "w+") do |file|
      file << test_str3
+  end
+  File.open("rspec/test_snip_files/subfolder/test_js.js", "w+") do |file|
+     file << test_str_js
   end
 end
 

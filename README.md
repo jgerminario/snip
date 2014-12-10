@@ -34,16 +34,16 @@ The original file tags will be modified slightly with `<*$*>` tags so you can re
 *Installation:*
 Snip requires Ruby and Ruby gems on your computer.
 
-To install (TBD):
+To install:
 ```
 gem install snipgem
 ```
 
 First time use:
 ```
-snip -f ~/desktop/my_snips.rb
+snip -f ~/desktop/
 ```
-where '~/desktop/my_snips.rb' is the name of the file you would like to save to. Run `snip -f` again to relocate your snip file if you move or rename it at any point.
+where '~/desktop/' can be the name of any directory you would like to save your `my_snips` file to. Run `snip -f` again to re-set the directory if you move the location of the `my_snips` file.
 
 Future use:
 ```
@@ -54,7 +54,7 @@ or
 snip filename.rb
 ```
 
-Currently only Ruby files are supported.
+Ruby and JavaScript files are currently supported, more languages can be supported upon request. Send feedback or bug reports to jgerminario@gmail.com.
 
 
 

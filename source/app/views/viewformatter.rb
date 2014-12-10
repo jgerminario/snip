@@ -95,7 +95,7 @@ Visit https://github.com/jgerminario/snip for more information or to submit bug 
 	end
 
 	def new_file_path
-		"Snippet file location saved as #{File.absolute_path(ARGV[1])}/my_snips.txt"
+		"Snippet file location saved as '#{File.absolute_path(ARGV[1])}/my_snips.txt'"
 	end
 
 	def no_args_message

@@ -26,7 +26,7 @@ module DestinationFileWriter
     if File.exist?(snip_filepath)
       @snip_file_name = snip_filepath
     else
-      abort(ViewFormatter.output_file_not_found(snip_file))
+      abort(ViewFormatter.output_file_not_found(snip_filepath))
     end
   end
 

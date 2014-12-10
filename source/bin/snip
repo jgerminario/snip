@@ -2,5 +2,5 @@
 
 require 'snip'
 
-chatter = Snip::Test.new
-chatter.say_hello
+runner = Snip::Run.new
+runner.execute

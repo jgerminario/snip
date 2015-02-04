@@ -18,11 +18,15 @@ attr_accessor :snippet_array
   end
 
   def self.rb_snippets
-    @@snippet_array.select {|snippet| snippet.filename.end_with?(".rb")}
+    @@snippet_array.select {|snippet| snippet.filename.end_with?(".rb") || snippet.filename.end_with?("(.rb)")}
+  end
+
+  def self.erb_snippets
+    @@snippet_array.select {|snippet| snippet.filename.end_with?(".erb") || snippet.filename.end_with?("(.erb)") }
   end
 
   def self.js_snippets
-    @@snippet_array.select {|snippet| snippet.filename.end_with?(".js")}
+    @@snippet_array.select {|snippet| snippet.filename.end_with?(".js") || snippet.filename.end_with?("(.js)") }
   end
 
   def initialize(args = {})

@@ -51,7 +51,7 @@ class CodeScanner
   def self.find_title(index)
     matches = @scan_array[index].match(/(<snip>|<\$>)(.+)/)
     if matches
-      @title = matches[2].strip
+      @title = matches[2].strip.chomp('-->')
     end
     @title
   end

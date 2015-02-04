@@ -30,14 +30,32 @@ module DestinationFileWriter
     end
   end
 
+  def directory
+    check_if_file_still_exists
+    File.dirname(@snip_file_name)
+  end
+
+  def return_display_file
+    check_if_file_still_exists
+    @snip_file_name
+  end
+
+  def find_all_snippet_files
+    snippet_files = []
+    Dir.glob(directory + "/my_snips.*").each { |file| snippet_files << file }
+    snippet_files
+  end
+
   def run(snippet_array, type=nil)
-    directory = File.dirname(@snip_file_name)
     case type
     when "rb"
       filename = directory + "/my_snips.rb"
       File.new(filename, 'w') unless File.exist?(filename)
     when "js"
       filename = directory + "/my_snips.js"
+      File.new(filename, 'w') unless File.exist?(filename)
+    when "erb"
+      filename = directory + "/my_snips.erb"
       File.new(filename, 'w') unless File.exist?(filename)
     else
       filename = @snip_file_name
@@ -66,21 +84,55 @@ module DestinationFileWriter
     end
   end
 
+  def reindexer(filename)
+    index = 1
+    file_array = []
+    File.open(filename, "r+").each do |line|
+      if line.match(/\*\*\*\* Snippet \d+:/)
+        line.sub!(/Snippet \d+:/, "Snippet #{index}:")
+        file_array << line
+        index += 1
+      else
+        file_array << line
+      end
+      line.gsub!("\t", "  ")
+    end
+    rewrite_file(filename,file_array)
+  end
+
+  def reindex_all
+    find_all_snippet_files.each {|file| reindexer(file)}
+  end
+
+  def restore_whitespace(filename, array)
+    array.map! { |snippet| snippet.strip + "\n\n\n\n" }
+    rewrite_file(filename, array)
+  end
+
+  def rewrite_file(filename, array)
+    File.open(filename, "w") do |file|
+      array.each do |line|
+        file << line
+      end
+    end
+  end
+
   def write_file(snippet_array, filename, type)
     File.open(filename, "a") do |file|
       snippet_array.each_with_index do |snip_object, index|
         file << ViewFormatter.snippet_indexer(determine_next_index(filename)+index, snip_object.title, type)
-        file << ViewFormatter.status_line(snip_object.line, type)
+        file << ViewFormatter.status_line(snip_object.line, type, snip_object.filename)
         file << "\n"
         file << snip_object.code
-        file << "\n\n"
-        unless type 
+        file << "\n\n\n"
+        unless type || snip_object.line == nil
           log = ViewFormatter.snip_terminal_status(snip_object.filename, snip_object.line)
           puts log
           write_to_log_file(log)
         end
       end
     end
+    reindexer(filename)
   end
 
   def write_to_log_file(log)

@@ -11,14 +11,12 @@ task :seed do
 	test_str2 = "#<$> Title ggg\ndef method\n  \"code\"\nend\n#</$>\n\n#<$> Title 2323\ndef method\n  \"code\"\nend\n#</$>\n\n#<$> Title 4\ndef method\n  \"code\"\nend\n#</$>"
 	test_str3 = "# <snip> Title of first snip\n  desc \"create the database\"\n  task :create do\n    puts \"Creating file \#{DB_PATH} if it doesn't exist...\"\n    touch DB_PATH\n  end\n# </snip>\n\n# <snip> Title of this snip\n  desc \"drop the database\"\n  task :drop do\n    puts \"Deleting \#{DB_PATH}...\"\n    rm_f DB_PATH\n  end\n# </snip>\n\n# <snip> Title of first snip\n  desc \"create the database\"\n  task :create do\n    puts \"Creating file \#{DB_PATH} if it doesn't exist...\"\n    touch DB_PATH\n  end\n# </snip>\n\n# <snip> Title of this snip\n  desc \"drop the database\"\n  task :drop do\n    puts \"Deleting \#{DB_PATH}...\"\n    rm_f DB_PATH\n  end\n# </snip>"
 	test_str_js = "//<$> Title ggg\nvar test1 = 44;\nvar test2 = 22;\n//</$>\n\n//<$>\nvar test4 = \"Hola\";\n//</$>\n\n"
+	test_str_erb = "<!-- <$> Title ggg -->\n  <% @snips.each do |snip| %>\n  <p><%= snip.title %></p> \n<% end %>\n<!-- </$> --> \n\n<!-- <$> Title ggg -->\n  <% @snips.each do |snip| %>\n  <p><%= snip.title %></p> \n<% end %>\n<!-- </$> --> \n\n"
+
 
 	FileUtils.rm_rf('rspec/test_snip_files')
 	Dir.mkdir("rspec/test_snip_files")
 	Dir.mkdir("rspec/test_snip_files/subfolder")
-
-	File.open("my_snips.rb", "w+") do |file|
-		file << ""
-	end
 
 	File.open("rspec/test_snip_files/test.rb", "w+") do |file|
      file << test_str1
@@ -31,6 +29,9 @@ task :seed do
   end
   File.open("rspec/test_snip_files/subfolder/test_js.js", "w+") do |file|
      file << test_str_js
+  end
+  File.open("rspec/test_snip_files/subfolder/test_erb.erb", "w+") do |file|
+     file << test_str_erb
   end
 end
 

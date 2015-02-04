@@ -8,6 +8,8 @@ module ViewFormatter
 	def snippet_indexer(index, title, type)
 		if type == "js"
 		  "// **** Snippet " + (index).to_s + ": #{title} **** \n"
+		elsif type == "erb"
+		  "<!-- **** Snippet " + (index).to_s + ": #{title} **** -->\n"
 		else
 			"# **** Snippet " + (index).to_s + ": #{title} **** \n"
 		end
@@ -18,7 +20,7 @@ module ViewFormatter
 	end
 
 	def invalid_file
-		"File must be a .js or .rb file."
+		"File must be a .js, .rb or .erb file."
 	end
 
 	def success_message(filedir)
@@ -29,16 +31,26 @@ module ViewFormatter
 		end
 	end
 
-  def status_line(line, type)
+  def status_line(line, type, file)
   	if type == "js"
-   	  "// Snipped from #{SourceFileReaderWriter.file_to_open}:#{line} on #{Time.now.strftime("%m-%d-%Y")}"
+   	  "// Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}"
+   	elsif type == "erb"
+   	  "<!-- Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}-->"
    	else
-   		"# Snipped from #{SourceFileReaderWriter.file_to_open}:#{line} on #{Time.now.strftime("%m-%d-%Y")}"
+   		"# Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}"
    	end
   end
 
+  def line_check(line)
+  	line ? ':' + line.to_s : nil
+  end
+
   def snip_terminal_status(filename, line)
-  	"#{File.absolute_path(filename)}:#{line} snipped"
+  	if line
+  		"#{filename}:#{line} snipped"
+  	else
+  		nil
+  	end
   end
 
   def specify_path
@@ -88,6 +100,7 @@ You can alternatively use <$> and </$>. Your tags will be replaced with <*snip*>
   snip <directory> - process a directory recursively
   snip -l - view log history if you need to debug previous snips
   snip -d - display your snips in terminal
+  snip -i - reindexes your snippet files (after deleting old snips, etc)
 
 Visit https://github.com/jgerminario/snip for more information or to submit bug reports/feature requests.
 
@@ -102,8 +115,12 @@ Visit https://github.com/jgerminario/snip for more information or to submit bug 
 		"Welcome to snip. Type 'snip --help' for help"
 	end
 
-	def specify_filename
-		"Please specify a filename after '-f'"
+	def specify_filename(filename)
+		if filename
+			"Your file is located at #{filename}"
+		else
+			"No output file found, please specify a filename after '-f'"
+		end
 	end
 
 	def need_to_specify_directory
@@ -130,4 +147,19 @@ Visit https://github.com/jgerminario/snip for more information or to submit bug 
 		end
 	end
 
+	def reindexed
+		"Your snippet files have been reindexed"
+	end
+
+	def clipboard_command
+		"Run 'snip -c' or specify code type (js, rb, erb, misc) and a title string with: 
+ 'snip -c rb \"Using string interpolation\"' "
+	end
+
+	def display_error
+		"Specify code type (js, rb, erb) and/or a search string, e.g. 'snip -d js \"event delegation\"', or snip -d .' for all snips"
+	end
+	def no_results
+		"No matching snippet files found"
+	end
 end

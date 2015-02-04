@@ -98,9 +98,13 @@ You can alternatively use <$> and </$>. Your tags will be replaced with <*snip*>
 
   snip <filename> - process a single file
   snip <directory> - process a directory recursively
-  snip -l - view log history if you need to debug previous snips
-  snip -d - display your snips in terminal
+  snip -c - creates new snippet from clipboard contents
+  snip -d . - display all your snips in terminal
+  snip -d <type> '<string>' - searches your snips by type (js, rb, erb) or search string
   snip -i - reindexes your snippet files (after deleting old snips, etc)
+  snip -l - view log history if you need to debug previous snips
+  snip --delete <num> - deletes the specified snippet number(s) (comma-delimited) and reindexes
+  snip --help - displays this help menu
 
 Visit https://github.com/jgerminario/snip for more information or to submit bug reports/feature requests.
 

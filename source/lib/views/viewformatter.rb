@@ -88,7 +88,7 @@ module ViewFormatter
 		"Snippet file location saved as '#{File.absolute_path(ARGV[1])}/my_snips.txt'"
 	end
 
-	def specify_filename(filename)
+	def check_for_file(filename)
 		if filename
 			"Your file is located at #{filename}"
 		else
@@ -96,7 +96,7 @@ module ViewFormatter
 		end
 	end
 
-	def need_to_specify_directory
+	def need_to_specify_a_directory
 		"Please specify an existing directory to save your snippets to"
 	end
 

@@ -24,8 +24,4 @@ module CommandLineController
     Snippet.snippet_array = []
   end
 
-  def display_search(text, ext)
-    SearchDisplay.run(DestinationFileWriter.return_display_file, text, ext)
-  end
-
 end

@@ -8,17 +8,7 @@ require_relative 'languages/languages'
 module Snip
   class Run
 
-### utility
-    def argv_ext_check(pos)
-      if ARGV[pos]
-        Language.supports?(ARGV[pos])
-      else
-        false
-      end
-    end
-
-### execute flow for ARGV - refactor into separate methods
-
+### execution flow for ARGV
     def execute
       unless ARGV[0]
         abort(ViewFormatter.no_args_message)
@@ -30,23 +20,12 @@ module Snip
 
       # set file location
       if ARGV[0] == "-f"
-        if !ARGV[1].nil?
-          if File.directory?(ARGV[1])
-            DestinationFileWriter.save_file_path_to_config_file(ARGV[1])
-            abort(ViewFormatter.new_file_path)
-          else
-            abort(ViewFormatter.need_to_specify_directory)
-          end
-        else
-          abort(ViewFormatter.specify_filename((DestinationFileWriter.snip_filepath)))
-        end
+        set_output_file_location
       end
-
 
       # show log
       if ARGV[0] == "-l" 
-        puts ViewFormatter.show_log(DestinationFileWriter.log_filepath)
-        abort
+        abort(ViewFormatter.show_log(DestinationFileWriter.log_filepath))
       end
 
       # reindex
@@ -67,70 +46,99 @@ module Snip
         unless ARGV[1]
           abort(ViewFormatter.delete_error)
         end
-        if ARGV[1].include?(",")
-          ids = ARGV[1].split(",")
-        else
-          ids = [ARGV[1]]
-        end
-        display_file = DestinationFileWriter.return_display_file
-        DestinationFileWriter.rewrite_file(display_file, SearchDisplay.delete(display_file, ids))
-        DestinationFileWriter.reindex_all
+        delete_specified(ARGV[1])
         abort(ViewFormatter.delete_success)
       end
 
       # display snips function
+      if ARGV[0] == "-a"
+        abort(ViewFormatter.show_snips(DestinationFileWriter.snip_filepath))
+      end
+
       if ARGV[0] == "-d"
-        if argv_ext_check(1)
-          if ARGV[2]
-            if !ARGV[3].nil?
-              abort(ViewFormatter.display_error)
-            else
-              puts CommandLineController.display_search(ARGV[2], "." + ARGV[1])
-            end
-          else
-            puts CommandLineController.display_search("", "." + ARGV[1])
-          end
-        elsif ARGV[1] == "."
-          puts ViewFormatter.show_snips(DestinationFileWriter.snip_filepath)
-        elsif !ARGV[1].nil?
-          if !ARGV[2].nil?
-            abort(ViewFormatter.display_error)
-          else
-            puts CommandLineController.display_search(ARGV[1], "")
-          end 
-        else
-          abort(ViewFormatter.display_error)
-        end
+        display_snips
         abort
       end
 
-      # at this point we need to male sure config file exists - may want to refactor this check to occur before -d (handled in show_snips currently)
+      # at this point we need to make sure config file exists - may want to refactor this check to occur before -d (handled in show_snips currently)
       DestinationFileWriter.check_config_file_for_snip_file
 
       # clipboard function
       if ARGV[0] == "-c"
         code = Clipboard.paste + "\n"
-        
-        if ARGV[2] && (Language.supports?(ARGV[1]) || ARGV[1] == "misc")
-          type = ARGV[1]
-          title = ARGV[2]
-          origin = ViewFormatter.clipboard_origin(type)
-        elsif ARGV[1].nil?
-          puts ViewFormatter.clipboard_prompts[0]
-          type = $stdin.gets.chomp
-          puts ViewFormatter.clipboard_prompts[1]
-          title = $stdin.gets.chomp
-        else
-          abort(ViewFormatter.clipboard_instructions)
-        end
-
-        Snippet.new(code: code, title: title, line: nil, filename: origin)
-        CommandLineController.file_writing
+        snip_from_clipboard(code)
         abort(ViewFormatter.clipboard_success(code))
       end
 
-
       # no CL arguments (e.g. '-c') - straight snip
+      perform_file_or_batch_processing
+    end
+
+    # -f
+    def set_output_file_location
+      if ARGV[1]
+        check_if_valid_directory(ARGV[1])
+      else
+        abort(ViewFormatter.check_for_file((DestinationFileWriter.snip_filepath)))
+      end
+    end
+
+    def check_if_valid_directory
+      if File.directory?(directory)
+        DestinationFileWriter.save_file_path_to_config_file(directory)
+        abort(ViewFormatter.new_file_path)
+      else
+        abort(ViewFormatter.need_to_specify_a_directory)
+      end
+    end
+
+    # --delete
+    def delete_specified(items)
+      if items.include?(",")
+        items = items.split(",")
+      else
+        items = [items]
+      end
+      display_file = DestinationFileWriter.return_display_file
+      DestinationFileWriter.rewrite_file(display_file, SearchDisplay.delete(display_file, items))
+      DestinationFileWriter.reindex_all
+    end
+
+    # -d
+    def display_snips
+      abort(ViewFormatter.display_error) unless correct_num_of_args?(:d)
+      if Language.supports?(ARGV[1]) # ext search
+        ext_to_search = ARGV[1]
+        string_to_search = ARGV[2]
+      else # string search only
+        string_to_search = ARGV[1]
+      end
+      puts SearchDisplay.run(DestinationFileWriter.return_display_file, string_to_search, ext_to_search))
+    end
+
+    def correct_num_of_args?(method)
+      !ARGV[1] || ARGV[3] || (!Language.supports?(ARGV[1]) && ARGV[2]) if method == :d
+    end
+
+    def snip_from_clipboard(code)
+      if ARGV[2] && (Language.supports?(ARGV[1]) || ARGV[1] == "misc") #ARGV[2] is title, ARGV[1] is ext
+        type = ARGV[1]
+        title = ARGV[2]
+        origin = ViewFormatter.clipboard_origin(type)
+      elsif ARGV[1].nil?
+        puts ViewFormatter.clipboard_prompts[0]
+        type = $stdin.gets.chomp
+        puts ViewFormatter.clipboard_prompts[1]
+        title = $stdin.gets.chomp
+      else
+        abort(ViewFormatter.clipboard_instructions)
+      end
+
+      Snippet.new(code: code, title: title, line: nil, filename: origin)
+      CommandLineController.file_writing
+    end
+
+    def perform_file_or_batch_processing
       if File.directory?(ARGV[0])
         BatchProcessing.process(ARGV[0])
       elsif File.file?(ARGV[0])

@@ -11,15 +11,16 @@ module CommandLineController
   def run(file)
     file_read = SourceFileReaderWriter.new(file)
     to_run = file_read.convert_to_array_of_lines
-    CodeScanner.run(to_run, SourceFileReaderWriter.file_to_open)
-      file_writing
-      file_read.overwrite_existing_snips
+    mismatch_status = CodeScanner.run(to_run, SourceFileReaderWriter.file_to_open)
+    abort(ViewFormatter.mismatched_tags(mismatch_status)) if mismatch_status
+    file_writing
+    file_read.overwrite_existing_snips
   end
 
   def file_writing
     DestinationFileWriter.run(Snippet.snippet_array)
     Language.languages.keys.each do |lang|
-      DestinationFileWriter.run(Snippet.select_lang_snippets(lang), lang) if Snippet.select_lang_snippets.any?
+      DestinationFileWriter.run(Snippet.select_lang_snippets(lang), lang) if Snippet.select_lang_snippets(lang).any?
     end
     Snippet.snippet_array = []
   end

@@ -60,6 +60,10 @@ module ViewFormatter
     "File must be a #{conjunctionator} file."
   end
 
+  def mismatched_tags(status)
+    "Missing closing tag in #{status[:filename]} after line #{status[:line]}"
+  end
+
   def success_message(filedir)
     if Snippet.snippet_counter > 0
       "Your snippet file has been successfully updated with #{Snippet.snippet_counter} new snips at: '#{filedir}'"

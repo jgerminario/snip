@@ -9,8 +9,14 @@ class CodeScanner
   def self.run(scan_array, filename)
     @scan_array = scan_array
     while @scan_array.join.include?('<snip>') || @scan_array.join.include?('<$>')
-      Snippet.new(code: array_range, title: @title, line: @line, filename: filename)
+      code = array_range
+      if code
+        Snippet.new(code: code, title: @title, line: @line, filename: filename)
+      else
+        return {filename: filename, line: @line} #in case of mismatch
+      end
     end
+    return nil
   end
 
   def self.find_begin_range
@@ -27,8 +33,12 @@ class CodeScanner
 
   def self.find_end_range
     @scan_array.each_with_index do |line, index|
+      if line.include?('<snip>') || line.include?('<$>') #mismatch before closing tag
+        return false
+      end
       if line.include?('</snip>') || line.include?('</$>')
         strip_snip_tag(index)
+        index
         return @end_scan = index
       end
     end
@@ -37,7 +47,7 @@ class CodeScanner
 
   def self.array_range
     find_begin_range
-    find_end_range
+    return false unless find_end_range
     @scan_array[@begin_scan+1..@end_scan-1].join
   end
 

@@ -7,6 +7,13 @@ Snip is an open source code snippet manager. With a simple command line interfac
 <img src="snip.gif" />
 </p>
 
+### New in release 0.0.8
+
+Snip now includes a clipboard functionality. Copy the code you want to save to your clipboard, then run `snip -c`. You'll be asked to specify a language type and a title.
+
+Snippet search has been added in 0.0.8. From the commandline, run `snip -d .` to see all of your snippets. To see only a certain language (rb, js, erb), specify as follows `snip -d js`. To search within the content of the snippet (for example, for any content with 'angular' in it), `snip -d "angular"`.
+
+
 ## How it works
 
 Snip uses simple, easy-to-remember tags that you place inside your code during your normal workflow:

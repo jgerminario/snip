@@ -1,6 +1,6 @@
 require 'rspec'
 # require 'active_record'
-require_relative '../app/controllers/controller'
+require_relative '../lib/controllers/controller'
 # require_relative '../config/environment'
 
 describe "This program" do

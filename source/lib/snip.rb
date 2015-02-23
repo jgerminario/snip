@@ -1,7 +1,7 @@
 require "snip/version"
 require "clipboard"
-require_relative '../app/controllers/controller'
-require_relative '../app/models/utils/batchprocessing'
+require_relative 'controllers/controller'
+require_relative 'models/utils/batchprocessing'
 
 module Snip
 	class Run

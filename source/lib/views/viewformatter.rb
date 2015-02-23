@@ -1,15 +1,22 @@
 # View component for file writing operations and possibly terminal output
 require 'date'
+require_relative '../languages/languages'
 
 module ViewFormatter
 
 	extend self
 
+  def conjunctionator(list, conj="or")
+    if list.class.name == "Hash"
+      list = list.keys
+    end
+    str = "#{list[0..-2].join(", ")} #{conj} #{list[-1]}"
+  end
+
 	def snippet_indexer(index, title, type)
-		if type == "js"
-		  "// **** Snippet " + (index).to_s + ": #{title} **** \n"
-		elsif type == "erb"
-		  "<!-- **** Snippet " + (index).to_s + ": #{title} **** -->\n"
+    languages = Languages.languages
+    if languages.key?(type)
+		  "#{languages[type][0]} **** Snippet " + (index).to_s + ": #{title} **** #{languages[type][1]} \n"
 		else
 			"# **** Snippet " + (index).to_s + ": #{title} **** \n"
 		end
@@ -20,7 +27,7 @@ module ViewFormatter
 	end
 
 	def invalid_file
-		"File must be a .js, .rb or .erb file."
+		"File must be a #{conjunctionator(Languages.languages)} file."
 	end
 
 	def success_message(filedir)
@@ -32,10 +39,9 @@ module ViewFormatter
 	end
 
   def status_line(line, type, file)
-  	if type == "js"
-   	  "// Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}"
-   	elsif type == "erb"
-   	  "<!-- Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}-->"
+    languages = Languages.languages
+  	if languages.key?(type)
+   	  "#{languages[type][0]} Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")} #{languages[type][1]}"
    	else
    		"# Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")}"
    	end
@@ -100,7 +106,7 @@ You can alternatively use <$> and </$>. Your tags will be replaced with <*snip*>
   snip <directory> - process a directory recursively
   snip -c - creates new snippet from clipboard contents
   snip -d . - display all your snips in terminal
-  snip -d <type> '<string>' - searches your snips by type (js, rb, erb) or search string
+  snip -d <type> '<string>' - searches your snips with type #{conjunctionator(Languages.languages)} and/or search string
   snip -i - reindexes your snippet files (after deleting old snips, etc)
   snip -l - view log history if you need to debug previous snips
   snip --delete <num> - deletes the specified snippet number(s) (comma-delimited) and reindexes
@@ -156,12 +162,12 @@ Visit https://github.com/jgerminario/snip for more information or to submit bug 
 	end
 
 	def clipboard_command
-		"Run 'snip -c' or specify code type (js, rb, erb, misc) and a title string with: 
+		"Run 'snip -c' or specify code type (#{Languages.languages.keys.join(", ") + " or misc"}) and a title string with: 
  'snip -c rb \"Using string interpolation\"' "
 	end
 
 	def display_error
-		"Specify code type (js, rb, erb) and/or a search string, e.g. 'snip -d js \"event delegation\"', or snip -d .' for all snips"
+		"Specify code type (#{conjunctionator(Languages.languages)}) and/or a search string, e.g. 'snip -d js \"event delegation\"', or snip -d .' for all snips"
 	end
 	def no_results
 		"No matching snippet files found"

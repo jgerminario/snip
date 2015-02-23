@@ -1,7 +1,12 @@
-languages = {
-  "js" => "//",
-  "erb" => "#",
-  "rb" => "#"
-}
+class Languages
 
-# "html" => ["<!--", "-->"]
+  def self.languages
+    {
+      "js" => ["//"],
+      "erb" => ["<--", "-->"],
+      "rb" => ["#"],
+      "html" => ["<!--", "-->"]
+    }
+  end
+
+end

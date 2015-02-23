@@ -2,6 +2,7 @@ require_relative '../models/utils/sourcefilereader'
 require_relative '../models/utils/codescanner'
 require_relative '../models/utils/destinationfilewriter'
 require_relative '../models/utils/searchfile'
+require_relative '../languages/languages'
 
 module CommandLineController
 
@@ -17,9 +18,9 @@ module CommandLineController
 
   def file_writing
     DestinationFileWriter.run(Snippet.snippet_array)
-    DestinationFileWriter.run(Snippet.rb_snippets, "rb") if Snippet.rb_snippets.any?
-    DestinationFileWriter.run(Snippet.js_snippets, "js") if Snippet.js_snippets.any?
-    DestinationFileWriter.run(Snippet.erb_snippets, "erb") if Snippet. erb_snippets.any?
+    Language.languages.keys.each do |lang|
+      DestinationFileWriter.run(Snippet.select_lang_snippets(lang), lang) if Snippet.select_lang_snippets.any?
+    end
     Snippet.snippet_array = []
   end
 

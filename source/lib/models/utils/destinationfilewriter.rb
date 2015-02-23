@@ -3,6 +3,7 @@
 
 
 require_relative '../../views/viewformatter'
+require_relative '../../languages/languages'
 CONFIG_PATH = File.expand_path("../../../../config/filepath.config", __FILE__)
 LOG_PATH = File.expand_path("../../../../log/snip.log", __FILE__)
 
@@ -47,15 +48,8 @@ module DestinationFileWriter
   end
 
   def run(snippet_array, type=nil)
-    case type
-    when "rb"
-      filename = directory + "/my_snips.rb"
-      File.new(filename, 'w') unless File.exist?(filename)
-    when "js"
-      filename = directory + "/my_snips.js"
-      File.new(filename, 'w') unless File.exist?(filename)
-    when "erb"
-      filename = directory + "/my_snips.erb"
+    if Language.supports?(type)
+      filename = directory + "/my_snips.#{type}"
       File.new(filename, 'w') unless File.exist?(filename)
     else
       filename = @snip_file_name

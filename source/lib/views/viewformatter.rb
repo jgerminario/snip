@@ -7,7 +7,7 @@ module ViewFormatter
 	extend self
 
 ### utility
-  def conjunctionator(list = Languages.languages, conj="or")
+  def conjunctionator(list = Language.languages, conj="or")
     if list.class.name == "Hash"
       list = list.keys
     end
@@ -20,7 +20,7 @@ module ViewFormatter
 
 ### file output formatting
 	def snippet_indexer(index, title, type)
-    languages = Languages.languages
+    languages = Language.languages
     if languages.key?(type)
 		  "#{languages[type][0]} **** Snippet " + (index).to_s + ": #{title} **** #{languages[type][1]} \n"
 		else
@@ -29,7 +29,7 @@ module ViewFormatter
 	end
 
   def status_line(line, type, file)
-    languages = Languages.languages
+    languages = Language.languages
     if languages.key?(type)
       "#{languages[type][0]} Snipped from #{file}#{line_check(line)} on #{Time.now.strftime("%m-%d-%Y")} #{languages[type][1]}"
     else
@@ -151,7 +151,7 @@ module ViewFormatter
 
   # clipboard (-c)
   def clipboard_instructions
-    "Run 'snip -c' or specify code type (#{Languages.languages.keys.join(", ") + " or misc"}) and a title string with: 
+    "Run 'snip -c' or specify code type (#{Language.languages.keys.join(", ") + " or misc"}) and a title string with: 
  'snip -c rb \"Using string interpolation\"' "
   end
 

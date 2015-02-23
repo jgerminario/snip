@@ -1,4 +1,4 @@
-class Languages
+class Language
 
   def self.languages
     {
@@ -7,6 +7,10 @@ class Languages
       "rb" => ["#"],
       "html" => ["<!--", "-->"]
     }
+  end
+
+  def self.supports?(lang)
+    self.languages.key?(lang)
   end
 
 end

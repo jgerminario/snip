@@ -159,7 +159,7 @@ module ViewFormatter
     ["Type of code (e.g. #{conjunctionator}) or press enter for misc:", "Title:"]
   end
 
-  def clipboard_origins(type)
+  def clipboard_origin(type)
     type != "misc" ? type_str = " (.#{type})" : type_str = ""
     "clipboard#{type_str}"
   end

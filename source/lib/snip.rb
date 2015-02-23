@@ -25,7 +25,8 @@ module Snip
 
       # show log
       if ARGV[0] == "-l" 
-        abort(ViewFormatter.show_log(DestinationFileWriter.log_filepath))
+        puts ViewFormatter.show_log(DestinationFileWriter.log_filepath)
+        abort
       end
 
       # reindex
@@ -37,7 +38,7 @@ module Snip
       # restore whitespace
       if ARGV[0] == "-w"
         display_file = DestinationFileWriter.return_display_file
-        DestinationFileWriter.restore_whitespace(display_file, SearchDisplay.run(display_file))
+        DestinationFileWriter.restore_whitespace(display_file, SearchDisplay.return_search_results(display_file))
         abort(ViewFormatter.whitespace_success)
       end
 
@@ -52,11 +53,12 @@ module Snip
 
       # display snips function
       if ARGV[0] == "-a"
-        abort(ViewFormatter.show_snips(DestinationFileWriter.snip_filepath))
+        puts ViewFormatter.show_snips(DestinationFileWriter.snip_filepath)
+        abort
       end
 
-      if ARGV[0] == "-d"
-        display_snips
+      if ARGV[0] == "-s" || ARGV[0] == "-d"
+        search_snips
         abort
       end
 
@@ -83,7 +85,7 @@ module Snip
       end
     end
 
-    def check_if_valid_directory
+    def check_if_valid_directory(directory)
       if File.directory?(directory)
         DestinationFileWriter.save_file_path_to_config_file(directory)
         abort(ViewFormatter.new_file_path)
@@ -105,26 +107,30 @@ module Snip
     end
 
     # -d
-    def display_snips
-      abort(ViewFormatter.display_error) unless correct_num_of_args?(:d)
+    def search_snips
+      if incorrect_num_of_args?(:d)
+        abort(ViewFormatter.display_error) 
+      end
+
       if Language.supports?(ARGV[1]) # ext search
         ext_to_search = ARGV[1]
         string_to_search = ARGV[2]
       else # string search only
         string_to_search = ARGV[1]
       end
-      puts SearchDisplay.run(DestinationFileWriter.return_display_file, string_to_search, ext_to_search))
+
+      puts SearchDisplay.return_search_results(DestinationFileWriter.return_display_file, string_to_search, ext_to_search)
     end
 
-    def correct_num_of_args?(method)
+    def incorrect_num_of_args?(method)
       !ARGV[1] || ARGV[3] || (!Language.supports?(ARGV[1]) && ARGV[2]) if method == :d
     end
 
+    # -c
     def snip_from_clipboard(code)
       if ARGV[2] && (Language.supports?(ARGV[1]) || ARGV[1] == "misc") #ARGV[2] is title, ARGV[1] is ext
         type = ARGV[1]
         title = ARGV[2]
-        origin = ViewFormatter.clipboard_origin(type)
       elsif ARGV[1].nil?
         puts ViewFormatter.clipboard_prompts[0]
         type = $stdin.gets.chomp
@@ -134,10 +140,12 @@ module Snip
         abort(ViewFormatter.clipboard_instructions)
       end
 
+      origin = ViewFormatter.clipboard_origin(type)
       Snippet.new(code: code, title: title, line: nil, filename: origin)
       CommandLineController.file_writing
     end
 
+    # no flags
     def perform_file_or_batch_processing
       if File.directory?(ARGV[0])
         BatchProcessing.process(ARGV[0])

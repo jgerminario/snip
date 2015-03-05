@@ -5,7 +5,7 @@ class BatchProcessing
   def self.process(directory)
   	directory = directory.chomp('/')
     Dir.glob(directory + "/**/*.{#{Language.languages.keys.join(',')}}") do |file|
-      next if file == '.' or file == '..'
+      next if file == '.' or file == '..' or Dir.exist?(file)
       CommandLineController.run(file)
     end
   end

@@ -77,7 +77,7 @@ or
 snip filename.rb
 ```
 
-Ruby and JavaScript files are currently supported, more languages can be supported upon request. Send feedback or bug reports to jgerminario@gmail.com.
+Send feedback or bug reports to jgerminario@gmail.com.
 
 
 

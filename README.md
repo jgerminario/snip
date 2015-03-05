@@ -7,12 +7,28 @@ Snip is an open source code snippet manager. With a simple command line interfac
 <img src="snip.gif" />
 </p>
 
-### New in release 0.0.8
+### New in release 0.0.9 (3/4/15)
+
+Language support has been expanded to the following languages:
+* JavaScript (existing)
+* Ruby (existing)
+* ERB (existing)
+* HTML
+* CSS
+* Python
+* PHP
+
+Languages can be easily added through the lib/languages/languages.rb file. Submit an issue or pull request to have additional support added.
+
+Search (with snip -s) is now smarter, with no case sensitivity and matching for individual words throughout the body of your snippet.
+
+### New in release 0.0.8 (2/8/15)
 
 Snip now includes a clipboard functionality. Copy the code you want to save to your clipboard, then run `snip -c`. You'll be asked to specify a language type and a title.
 
-Snippet search has been added in 0.0.8. From the commandline, run `snip -d .` to see all of your snippets. To see only a certain language (rb, js, erb), specify as follows `snip -d js`. To search within the content of the snippet (for example, for any content with 'angular' in it), `snip -d "angular"`.
+Snippet search has been added in 0.0.8. From the commandline, run `snip -a` to see all of your snippets. To see only a certain language (rb, js, erb), specify as follows `snip -s js`. To search within the content of the snippet (for example, for any content with 'angular' in it), `snip -s "angular"`.
 
+Other miscellaneous functionality can be referenced with snip --help.
 
 ## How it works
 

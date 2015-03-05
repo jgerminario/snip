@@ -183,7 +183,7 @@ module ViewFormatter
 
 This specifies the directory where you would like to save your snippets. 'my_snips.txt' will be automatically created if it doesn't already exist. If you move your my_snips.txt file, you will need to run 'snip -f' again.
 
-Ruby and JavaScript snippet files will be automatically created in the same directory as the .txt file.
+Language-specific (e.g. .js, .rb) snippet files will be automatically created in the same directory as the .txt file.
 
 
 *** To add snip tags into your code: ***
@@ -207,9 +207,9 @@ You can alternatively use <$> and </$>. Your tags will be replaced with <*snip*>
 
   snip <filename> - process a single file
   snip <directory> - process a directory recursively
+  snip -a - display all your snips in terminal
   snip -c - creates new snippet from clipboard contents
-  snip -d . - display all your snips in terminal
-  snip -d <type> '<string>' - searches your snips with type #{conjunctionator} and/or search string
+  snip -s <type> '<string>' - searches your snips with type #{conjunctionator} and/or search string
   snip -i - reindexes your snippet files (after deleting old snips, etc)
   snip -l - view log history if you need to debug previous snips
   snip --delete <num> - deletes the specified snippet number(s) (comma-delimited) and reindexes
